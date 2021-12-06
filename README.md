@@ -1,4 +1,4 @@
-# How to deploy WordPress and MySQL on Kubernetes
+# Deploy WordPress and MySQL on Kubernetes
 
 ## Steps
 
