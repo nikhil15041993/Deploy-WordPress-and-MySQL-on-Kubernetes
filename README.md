@@ -1,22 +1,45 @@
+# How to deploy WordPress and MySQL on Kubernetes
 
-# Deploying WordPress and MySQL with Persistent Volumes
-
-# Objectives
-Create PersistentVolumeClaims and PersistentVolumes
-
-    1. mysql.yaml (MySQL resource configs)
-    2. wordpress.yaml ( WordPress resource configs)
-    3. mysql-configmap.yaml 
-    4. secretfile.yaml ( mysql password file)
-    Apply all the files  by kubectl apply -k ./
-    
+## Steps
 
 
+* Create PersistentVolumeClaims and PersistentVolumes
+* Create a Secret for MySQL
+* Deploy MySQL
+* Deploy WordPress
+* Troubleshooting
 
+## Create a Secret for MySQL Password
 
+A Secret is an object that stores a piece of sensitive data like a password or key.
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-pass
+type: Opaque
+data:
+        
+  password: password
+  ```
+  
+Then run:
+```
+kubectl create -f secret.yml  
+```
+Deploy MySQL and WordPress 
 
+Here’s the mysql.yaml for MySQL service and wordpress.yaml for WordPress
 
+Now create the deployment and service:
+```
+kubectl create -f mysql.yaml
+kubectl create -f wordpress.yaml
+```
 
-MySQL and Wordpress each require a PersistentVolume to store data. Their PersistentVolumeClaims will be created at the deployment step.
-Many cluster environments have a default StorageClass installed. When a StorageClass is not specified in the PersistentVolumeClaim, the cluster's default StorageClass is used instead.
-When a PersistentVolumeClaim is created, a PersistentVolume is dynamically provisioned based on the StorageClass configuration.
+## Launch WordPress
+
+```
+minikube service <service name>
+```
+
